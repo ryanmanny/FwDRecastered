@@ -37,6 +37,7 @@
 #define STR_SNAG_LOG "You snag the line on a log just as your dad's zipper snags on his jeans"
 #define STR_WET_FOOT ""
 
+//lol
 typedef enum boolean
 {
 	FALSE, TRUE
@@ -59,6 +60,7 @@ typedef struct cell
 	Pos position;
 } Cell;
 
+//lol
 typedef enum type
 {
 	SEA_CUCUMBER, BOOT, TROUT, DEAD_BODY, RAINBOW, GOLDFISH, FLYING_FISH, RESEMBLES_SANDERS, ANCHOR, ANGLER, DAD_CLONE, FISH_PULL_YOU, SNAG_LOG

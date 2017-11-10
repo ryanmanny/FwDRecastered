@@ -11,7 +11,7 @@ default: all
 all: build
 
 build: *.cpp
-	$(GPP) $(CFLAGS) -o $(BINNAME) $(LINK) *.cpp
+	$(GPP) $(CFLAGS) -o $(BINNAME) *.cpp $(LINK)
 
 run: build
 	./$(BINNAME)
@@ -19,4 +19,4 @@ run: build
 #builds on top of deleted file
 clean:
 	$(RM) $(BINNAME)
-	bulid
+	build
