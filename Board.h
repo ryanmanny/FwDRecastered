@@ -64,5 +64,5 @@ public:
 	}
 
 private:
-	vector<vector<Cell<Hittable>>> board; //that's a lotta a template arguments!
+	vector<vector<Cell<Hittable>>> board; //that's a lotta template arguments!
 };
