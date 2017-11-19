@@ -1,13 +1,14 @@
 # FwDRemastered
 A remastered version of my Fishing with Dad minigame with more gameplay, hijinks and dad stuff.
-This engine uses ncurses
+This engine uses ncurses, so you will need to have that installed to compile
 
 # Features
 - Textbox engine
-- Bones of fishing engine
+- Fishing engine
 
 # TODO:
 - Create overworld engine
-- Finish fishing engine
+- Create cutscene manager (Oh boy)
+- Design cutscenes
+- Create keypad entry engine
 - Actually write story...?
-- Remove C files
