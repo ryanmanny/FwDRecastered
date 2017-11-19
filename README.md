@@ -1,5 +1,6 @@
 # FwDRemastered
-A remastered version of my Fishing with Dad minigame with more gameplay, hijinks and dad stuff
+A remastered version of my Fishing with Dad minigame with more gameplay, hijinks and dad stuff.
+This engine uses ncurses
 
 # Features
 - Textbox engine
@@ -9,3 +10,4 @@ A remastered version of my Fishing with Dad minigame with more gameplay, hijinks
 - Create overworld engine
 - Finish fishing engine
 - Actually write story...?
+- Remove C files
