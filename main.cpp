@@ -23,8 +23,8 @@ int main(void)
 	// t.moveWindow(5,5);
 	// t.callBox("Here's a word that'stoolong");
 
-	Board<Fish> board;
-	board.print();
+	Board board;
+	board.run();
 
 	getch();
 

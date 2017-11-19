@@ -1,5 +1,4 @@
-#include <curses.h>
-#include "Sleep.h"
+#include "ReFishing.h"
 
 #include <string>
 
@@ -52,7 +51,9 @@ public:
 
 	Textbox(const unsigned int newWidth, const unsigned int newHeight, const unsigned int newXpos, const unsigned int newYpos)
 	{
+		//we need to go deeper
 		*this = Textbox(newWidth, newHeight);
+
 		moveWindow(newXpos, newYpos);
 	}
 
@@ -208,18 +209,21 @@ public:
 		refresh();
 		return true;
 	}
+
 	//Will be called by the Textbox engine when [SPEED<NewSpeed>] is encountered
 	bool changeSpeed(unsigned int newSpeed) //actually changes pause length
 	{
 		_pause = ((double)DEFAULTSPEED / newSpeed) * DEFAULTPAUSE; //pause becomes the ratio between speed and defaultSpeed times defaultPause
 		return true; //I'm not quite sure what the fail condition is for this one yet
 	}
+
 	bool changeSize(unsigned int newWidth, unsigned int newHeight)
 	{
 		_width = newWidth;
 		_height = newHeight;
 		return true;
 	}
+
 	bool moveWindow(unsigned int newxpos, unsigned int newypos)
 	{
 		_xpos = newxpos;
