@@ -23,10 +23,19 @@ int main(void)
 	// t.moveWindow(5,5);
 	// t.callBox("Here's a word that'stoolong");
 
-	Board board;
-	board.run();
+	FishingBoard board;
+	Fish *fish = board.run();
 
-	getch();
+	if (fish != nullptr)
+	{
+		t.callBox(fish->text);
+	}
+	else
+	{
+		t.callBox("Ain't no fish found");
+	}
+
+
 
 	// Textbox t(20,10);
 	
