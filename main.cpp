@@ -1,7 +1,7 @@
 //#include "fishing.h"
 
 #include "ReFishing.h"
-#include "Board.h"
+#include "FishingBoard.h"
 #include "Textbox.h"
 
 int main(void)
@@ -13,15 +13,23 @@ int main(void)
 	noecho();
 	leaveok(stdscr, true);
 
-	// Board<Fish> board;
-	// board.print();
-
+	//Textbox should be constructed at the beginning of the scene. It will not appear until it is called with a string
 	Textbox t(20,10);
-	//Example command with syntax and all of the commands. Maybe consider putting a / between words or something...
-	t.callBox("Here's an awesome string [P1000]that if it [S200]doesn't work you go[R]nna die a horrible death [L]Watch out for danger it could be anywhere");
-	//Words that are too long will newline but spill out of the side. That is fine
-	//t.callBox("Here's a word that'stoolong");
+	// //Example command with syntax and all of the commands. Maybe consider putting a / between words or something...
+	// //t.callBox("Here's an awesome string [P1000]that if it [S200]doesn't work you go[R]nna die a horrible death [L]Watch out for danger it could be anywhere");
+	// t.callBox("NATALIE [S200]IS A BIG JERK [S100]WHO DOESNT SAY WHAT THE TEXTBOX SHOULD SAY");
+	// //Words that are too long will newline but spill out of the side. That is fine
+	// t.changeSize(10, 5);
+	// t.moveWindow(5,5);
+	// t.callBox("Here's a word that'stoolong");
+
+	Board<Fish> board;
+	board.print();
+
 	getch();
+
+	// Textbox t(20,10);
+	
 
 	endwin();
 }

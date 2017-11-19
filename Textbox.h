@@ -1,4 +1,4 @@
-#include "ReFishing.h"
+#include <curses.h>
 #include "Sleep.h"
 
 #include <string>
@@ -30,6 +30,9 @@ class Textbox
 public:
 	Textbox()
 	{
+		_xpos = 0;
+		_ypos = 0;
+
 		_x = 0;
 		_y = 0;
 
@@ -39,7 +42,7 @@ public:
 		_pause = DEFAULTPAUSE;
 	}
 
-	Textbox(unsigned int newWidth, unsigned int newHeight)
+	Textbox(const unsigned int newWidth, const unsigned int newHeight)
 	{
 		*this = Textbox();
 
@@ -47,32 +50,39 @@ public:
 		_height = newHeight;
 	}
 
+	Textbox(const unsigned int newWidth, const unsigned int newHeight, const unsigned int newXpos, const unsigned int newYpos)
+	{
+		*this = Textbox(newWidth, newHeight);
+		moveWindow(newXpos, newYpos);
+	}
+
 	//border is one wide around textbox
-	void drawBorder() //maybe accept a border enum type?
+	void drawBorder() const //maybe accept a border enum type?
 	{
 		//for now here's the default border
 
 		//the corners
-		mvaddch(0,           0,           ACS_ULCORNER); 	//topleft corner
-		mvaddch(0,           _width + 1,  ACS_URCORNER); 	//topright corner
-		mvaddch(_height + 1, 0,           ACS_LLCORNER);	//bottomleft corner
-		mvaddch(_height + 1, _width + 1,  ACS_LRCORNER);	//bottomright corner
+		mvaddch(0 + _ypos,			 0 + _xpos,           ACS_ULCORNER); 	//topleft corner
+		mvaddch(0 + _ypos,			 _width + _xpos + 1,  ACS_URCORNER); 	//topright corner
+		mvaddch(_height + _ypos + 1, 0 + _xpos,           ACS_LLCORNER);	//bottomleft corner
+		mvaddch(_height + _ypos + 1, _width + _xpos + 1,  ACS_LRCORNER);	//bottomright corner
 
 		//horizontal lines
 		for (unsigned int i = 1; i < _width + 1; i++)
 		{
 			//the top
-			mvaddch(0,           i,       ACS_HLINE);
+			mvaddch(0 + _ypos,			 i + _xpos,       		ACS_HLINE);
 			//the bottom
-			mvaddch(_height + 1, i,       ACS_HLINE);
+			mvaddch(_height + _ypos + 1, i + _xpos,       		ACS_HLINE);
 		}
+
 		//vertical lines
 		for (unsigned int j = 1; j < _height + 1; j++)
 		{
 			//the left
-			mvaddch(j,		0,			  ACS_VLINE);
+			mvaddch(j + _ypos,			 0 + _xpos,			  	ACS_VLINE);
 			//the right
-			mvaddch(j,		_width + 1,   ACS_VLINE);
+			mvaddch(j + _ypos,			 _width + _xpos + 1,   	ACS_VLINE);
 		}
 		refresh();
 	}
@@ -80,11 +90,13 @@ public:
 	void callBox(string s)
 	{
 		unsigned int i = 0, j = 0;
-		char opcode; //noop
+		char opcode = 'N'; //noop
+		
 		string word;
 		string command;
 
 		drawBorder();
+		clear();
 
 		while (i < s.length())
 		{
@@ -117,6 +129,10 @@ public:
 					{
 						newLine();
 					}
+					else if (opcode == 'R') //reset
+					{
+						reset();
+					}
 					command = "";
 				}
 				else if (s.at(i) == ']')
@@ -133,7 +149,7 @@ public:
 			i++;
 
 			//go to next line if we run out of room on this one
-			if (_x + word.length() > _width)
+			if (_x + word.length() > _width + 1)
 			{
 				//if we ran out of room, just stop trying to print
 				if(!newLine())
@@ -146,15 +162,20 @@ public:
 			j = 0;
 			while (j < word.length())
 			{
-				mvaddch(_y + 1, _x++ + 1, word.at(j)); //place character, move position
-				refresh();
+				if (word.at(j) != ' ')
+				{
+					mvaddch(_y + _ypos + 1, _x + _xpos + 1, word.at(j)); //place character, move position
+					refresh();
+				}
 				sleepms(_pause);
+				_x++;
 				j++;
 			}
 
 			word = "";
 		}
 		move(_width - 1, _height - 1); //should move the cursor to the bottom right but it doesn't work. I think it has to do with one of my flags I set in main
+		getch();
 	}
 
 	bool newLine()
@@ -170,13 +191,49 @@ public:
 			return false; //We ran out of room on the screen
 		}
 	}
-
+	//Overwrites all characters with spaces
+	bool clear()
+	{
+		//resets cursor to top right
+		_x = 0;
+		_y = 0;
+		//since we have no idea what is in the box beforehand we have to call this every time
+		for (unsigned int i = 1; i < _width + 1; i++)
+		{
+			for (unsigned int j = 1; j < _height + 1; j++)
+			{
+				mvaddch(j + _ypos, i + _xpos, ' '); //overwrites with space
+			}
+		}
+		refresh();
+		return true;
+	}
 	//Will be called by the Textbox engine when [SPEED<NewSpeed>] is encountered
 	bool changeSpeed(unsigned int newSpeed) //actually changes pause length
 	{
 		_pause = ((double)DEFAULTSPEED / newSpeed) * DEFAULTPAUSE; //pause becomes the ratio between speed and defaultSpeed times defaultPause
+		return true; //I'm not quite sure what the fail condition is for this one yet
+	}
+	bool changeSize(unsigned int newWidth, unsigned int newHeight)
+	{
+		_width = newWidth;
+		_height = newHeight;
+		return true;
+	}
+	bool moveWindow(unsigned int newxpos, unsigned int newypos)
+	{
+		_xpos = newxpos;
+		_ypos = newypos;
+		return true;
+	}
+	bool reset()
+	{
+		return changeSpeed(DEFAULTSPEED);
 	}
 private:
+	unsigned int _xpos; //xpos of window itself
+	unsigned int _ypos;	//ypos of window itself
+
 	unsigned int _x; //xpos in window
 	unsigned int _y; //ypos in window
 
