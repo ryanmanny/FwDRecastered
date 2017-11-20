@@ -1,0 +1,5 @@
+S 010,010
+M 003,003
+T Your first day on the job in a government facility
+# this is a comment and hopefully won't crash the program :)
+z this is an invalid character, it will generate an error to the window

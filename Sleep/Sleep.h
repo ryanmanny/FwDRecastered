@@ -8,12 +8,3 @@ void sleepms(unsigned int ms);
 #else
 	#include <unistd.h>
 #endif
-
-void sleepms(unsigned int ms)
-{
-	#ifdef _WIN32
-		Sleep(ms);
-	#else
-		usleep(ms * 1000); //usleep takes microseconds
-	#endif
-}
